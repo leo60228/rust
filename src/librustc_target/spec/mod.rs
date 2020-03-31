@@ -512,6 +512,8 @@ supported_targets! {
     ("powerpc-wrs-vxworks", powerpc_wrs_vxworks),
     ("powerpc-wrs-vxworks-spe", powerpc_wrs_vxworks_spe),
     ("powerpc64-wrs-vxworks", powerpc64_wrs_vxworks),
+
+    ("aarch64-unknown-horizon-libnx", aarch64_unknown_horizon_libnx),
 }
 
 /// Everything `rustc` knows about how to compile for a specific target.
