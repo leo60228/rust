@@ -146,4 +146,10 @@ pub fn get_concurrency() -> usize {
         // FIXME: implement
         1
     }
+
+    #[cfg(target_vendor = "libnx")]
+    fn num_cpus() -> usize {
+        // FIXME: implement
+        1
+    }
 }

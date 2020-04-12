@@ -68,5 +68,7 @@ pub mod solaris;
 pub mod vxworks;
 #[cfg(target_os = "wasi")]
 pub mod wasi;
+#[cfg(target_vendor = "libnx")]
+pub mod libnx;
 
 pub mod raw;

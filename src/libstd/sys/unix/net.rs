@@ -1,3 +1,5 @@
+#![cfg_attr(target_env = "newlib", allow(unused_variables, dead_code))]
+
 use crate::cmp;
 use crate::ffi::CStr;
 use crate::io::{self, IoSlice, IoSliceMut};
@@ -314,12 +316,23 @@ impl Socket {
     }
 
     pub fn set_nodelay(&self, nodelay: bool) -> io::Result<()> {
-        setsockopt(self, libc::IPPROTO_TCP, libc::TCP_NODELAY, nodelay as c_int)
+        #[cfg(not(target_env = "newlib"))] {
+            setsockopt(self, libc::IPPROTO_TCP, libc::TCP_NODELAY, nodelay as c_int)
+        }
+        #[cfg(target_env = "newlib")] {
+            Ok(())
+        }
     }
 
+    #[cfg(not(target_env = "newlib"))]
     pub fn nodelay(&self) -> io::Result<bool> {
         let raw: c_int = getsockopt(self, libc::IPPROTO_TCP, libc::TCP_NODELAY)?;
         Ok(raw != 0)
+    }
+
+    #[cfg(target_env = "newlib")]
+    pub fn nodelay(&self) -> io::Result<bool> {
+        Ok(false)
     }
 
     pub fn set_nonblocking(&self, nonblocking: bool) -> io::Result<()> {

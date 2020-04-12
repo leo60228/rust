@@ -1,3 +1,4 @@
+#![cfg_attr(target_env = "newlib", allow(unused_variables, dead_code))]
 #![unstable(reason = "not public", issue = "none", feature = "fd")]
 
 use crate::cmp;
@@ -53,6 +54,7 @@ impl FileDesc {
         Ok(ret as usize)
     }
 
+    #[cfg(not(target_env = "newlib"))]
     pub fn read_vectored(&self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize> {
         let ret = cvt(unsafe {
             libc::readv(
@@ -62,6 +64,11 @@ impl FileDesc {
             )
         })?;
         Ok(ret as usize)
+    }
+
+    #[cfg(target_env = "newlib")]
+    pub fn read_vectored(&self, bufs: &mut [IoSliceMut<'_>]) -> io::Result<usize> {
+        Err(io::Error::new(io::ErrorKind::Other, "operation not supported"))
     }
 
     pub fn read_to_end(&self, buf: &mut Vec<u8>) -> io::Result<usize> {
@@ -105,6 +112,7 @@ impl FileDesc {
         Ok(ret as usize)
     }
 
+    #[cfg(not(target_env = "newlib"))]
     pub fn write_vectored(&self, bufs: &[IoSlice<'_>]) -> io::Result<usize> {
         let ret = cvt(unsafe {
             libc::writev(
@@ -114,6 +122,11 @@ impl FileDesc {
             )
         })?;
         Ok(ret as usize)
+    }
+
+    #[cfg(target_env = "newlib")]
+    pub fn write_vectored(&self, bufs: &[IoSlice<'_>]) -> io::Result<usize> {
+        Err(io::Error::new(io::ErrorKind::Other, "operation not supported"))
     }
 
     pub fn write_at(&self, buf: &[u8], offset: u64) -> io::Result<usize> {

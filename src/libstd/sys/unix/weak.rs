@@ -16,6 +16,7 @@
 //! symbol, but that caused Debian to detect an unnecessarily strict versioned
 //! dependency on libc6 (#23628).
 
+#[cfg(not(target_env = "newlib"))]
 use crate::ffi::CStr;
 use crate::marker;
 use crate::mem;
@@ -53,12 +54,18 @@ impl<F> Weak<F> {
     }
 }
 
+#[cfg(not(target_env = "newlib"))]
 unsafe fn fetch(name: &str) -> usize {
     let name = match CStr::from_bytes_with_nul(name.as_bytes()) {
         Ok(cstr) => cstr,
         Err(..) => return 0,
     };
     libc::dlsym(libc::RTLD_DEFAULT, name.as_ptr()) as usize
+}
+
+#[cfg(target_env = "newlib")]
+unsafe fn fetch(_name: &str) -> usize {
+    0
 }
 
 #[cfg(not(target_os = "linux"))]
