@@ -1807,7 +1807,7 @@ dependencies = [
 [[package]]
 name = "libc"
 version = "0.2.68"
-source = "git+https://github.com/leo60228/libc.git?branch=bindgen-newlib#0328320ed89e398679245eb8c9de3362e71c9b2e"
+source = "git+https://github.com/leo60228/libc.git?branch=bindgen-newlib#89d63e017296edc1a97f6e7cf8ff3726599b467b"
 dependencies = [
  "rustc-std-workspace-core",
 ]
