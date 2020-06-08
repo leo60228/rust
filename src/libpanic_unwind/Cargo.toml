@@ -15,5 +15,5 @@ alloc = { path = "../liballoc" }
 core = { path = "../libcore" }
 libc = { version = "0.2", default-features = false }
 unwind = { path = "../libunwind" }
-compiler_builtins = "0.1.0"
+compiler_builtins = "=0.1.27"
 cfg-if = "0.1.8"
